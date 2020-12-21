@@ -1,5 +1,6 @@
 const { Tour } = require("../models");
 const APIFeatures = require("../utils/apiFeatures");
+const AppError = require("../utils/appError");
 
 exports.getAllTours = async (req, res, next) => {
   try {
@@ -18,7 +19,7 @@ exports.getAllTours = async (req, res, next) => {
       },
     });
   } catch (err) {
-    console.log(err)
+    console.log(err);
     res.status(404).json({
       status: "fail",
       message: err,
@@ -26,22 +27,18 @@ exports.getAllTours = async (req, res, next) => {
   }
 };
 
-exports.getTour = async (req, res) => {
-  try {
-    const tour = await Tour.findOne({ where: { id: req.params.id } });
-    res.status(200).json({
-      status: "success",
-      data: {
-        tour,
-      },
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: "fail",
-      message: err,
-    });
+exports.getTour = catchAsync(async (req, res) => {
+  const tour = await Tour.findOne({ where: { id: req.params.id } });
+  if (!tour) {
+    return next(new AppError("No tour found with that ID", 404));
   }
-};
+  res.status(200).json({
+    status: "success",
+    data: {
+      tour,
+    },
+  });
+});
 
 exports.createTour = async (req, res) => {
   try {
