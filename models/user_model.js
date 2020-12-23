@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
-    static associate(models) {}
+    static associate(models) { }
 
     async correctPassword(candidatePassword, userPassword) {
       return await bcrypt.compare(candidatePassword, userPassword);
@@ -98,6 +98,5 @@ module.exports = (sequelize, DataTypes) => {
       exclude: ["password"],
     },
   });
-
   return User;
 };

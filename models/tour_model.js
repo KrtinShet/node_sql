@@ -3,7 +3,7 @@ const slugify = require("slugify");
 
 module.exports = (sequelize, DataTypes) => {
   class Tour extends Model {
-    static associate(models) {}
+    static associate(models) { }
   }
   Tour.init(
     {
